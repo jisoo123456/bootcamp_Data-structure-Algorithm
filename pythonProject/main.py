@@ -1,4 +1,4 @@
-katok = ["다현", "정연", "쯔위", "사나", "지효"]
+katok = ["다현", "정연", "쯔위", "사나", "지효", "나연"]
 
 
 def delete_data(position):
@@ -6,13 +6,10 @@ def delete_data(position):
         print("데이터를 삭제할 범위를 벗어났습니다")
         return
 
-    katok[position] = None
+    for i in range(position, len(katok)):
+        katok.pop()
 
-    for i in range(position, len(katok)-1):
-        katok[i] = katok[i + 1]
-
-    katok.pop()
     print(katok)
 
 
-delete_data(5)
+delete_data(1)
