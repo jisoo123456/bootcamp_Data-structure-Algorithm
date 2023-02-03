@@ -1,54 +1,37 @@
-def add_data(friend):
-	katok.append(friend)
+#시간이 부족해서 다 못했습니다. 시간이 마무리 되서 일단 오늘 안에 완성해서 제 깃에 업로드하겠습니다
+def find_and_insert_data(pokemon, health):
+	find_pos = -1
+	for i in range(len(pokemons)) : #(0~3)
+		pair = pokemons.values(i)
+		if health >= pair :  #i = 2
+			find_pos = i     #find_pos = 2
+			break
+	if find_pos == -1:
+		findPos = len(pokemons)
 
-def insert_data(position, friend):
-	if position < 0 or position > len(katok):
-		print("데이터를 삽입할 범위를 벗어났습니다")
-		return #이 함수를 빠져 나가기 위해서 return 작성
+	insert_data(find_pos, (pokemon, health))
 
-	katok.append(None)
 
-	for i in range(len(katok)-1, position, -1):
-		katok[i] = katok[i-1]
-
-	katok[position] = friend
-
-def delete_data(position):
-	if position < 0 or position > len(katok)-1:
-		print("데이터를 삭제할 범위를 벗어났습니다")
+def insert_data(position, **pokemon):
+	if position < 0 or position > len(pokemon):
+		print("데이터를 삽입할 범위를 벗어났습니다.")
 		return
-	for i in range(positon, len(katok)-1):
-		katok[i] = katok[i+1]
 
-	katok.pop()
-	print(katok)
+	pokemons.append(None)
+
+	for i in range(len(pokemons) - 1, position, -1):
+		pokemons[i] = pokemons[i - 1]
+
+	pokemons[position] = pokemon
 
 
-if __name__ == "main":
+pokemons = {"피카츄" : 100, "파이리" : 80, "꼬부기" : 30, "라이츄" : 10}  #이상해 50[피카츄 파이리 이상해 꼬부기 라이츄]
 
-	while (select !=4):
 
-		select = int(input("선택하세요(1: 추가, 2: 삽입, 3: 삭제, 4: 종료)-->"))
+if __name__ == "__main__":
 
-		if(select == 1):
-			data = input("추가할 데이터-->")
-			add_data(data)
-			print(katok)
-
-		elif(select == 2):
-			pos = int(input("삽입할 위치-->"))
-			data = int(input("추가할 데이터"))
-			insert_data(pos, data)
-			print(katok)
-
-		elif(select == 3):
-			pos = int(input("삭제할 위치-->"))
-			delete_data(pos, data)
-			print(katok)
-
-		elif(select == 4):
-			print(katok)
-			exit()
-		else:
-			print("1~4 중 고르세요!")
-			continue
+	while True:
+		pokemon = input("추가할 포켓몬--> ")
+		health = int(input(f"{pokemon}의 능력치--> "))
+		find_and_insert_data(pokemon, health)
+		print(pokemons)
