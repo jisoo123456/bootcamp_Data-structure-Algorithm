@@ -1,16 +1,18 @@
-katok = ['다현', '정연', '쯔위', '사나', '지효']
+katok = ["다현", "정연", "쯔위", "사나", "지효"]
 
-def insert_data(position, friend):
-	if position < 0 or position > len(katok):
-		print("데이터를 삽입할 범위를 벗어났습니다")
-		return #이 함수를 빠져 나가기 위해서 return 작성
 
-	katok.append(None)
+def delete_data(position):
+    if position < 0 or position > len(katok)-1:
+        print("데이터를 삭제할 범위를 벗어났습니다")
+        return
 
-	for i in range(len(katok)-1, position, -1):
-		katok[i] = katok[i-1]
+    katok[position] = None
 
-	katok[position] = friend
-	print(katok)
+    for i in range(position, len(katok)-1):
+        katok[i] = katok[i + 1]
 
-insert_data(2, "나연")
+    katok.pop()
+    print(katok)
+
+
+delete_data(5)
