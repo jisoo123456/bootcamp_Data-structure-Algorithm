@@ -1,53 +1,112 @@
-def find_and_insert_data(pokemon, health):
-	find_pos = -1
-	list_pokemons_keys = list(pokemons.keys())
-	list_pokemons_value = list(pokemons.values())  #[100, 80, 30, 10]
+class Node():
+    def __int__(self):
+        self.data = None
+        self.node = None
 
-	for i in range(len(list_pokemons_value)):  #4
-		pair = list_pokemons_value[i]  #0~3
-		if health >= pair:  #50 > 30
-			find_pos = i  #2
-			break
-	if find_pos == -1:
-		find_pos = len(pokemons)
+def print_nodes(start):
+    current = start
+    print(current.data, end = ' ')
+    while current.link != start:
+        pre = current  #
+        current = pre.link  #
+        print(current.data, end = ' ')
+    print()
 
-	insert_data(find_pos, pokemon, health)
 
-def insert_data(position, pokemon, health):  #2
-	if position < 0 or position > len(pokemons):
-		print("데이터를 삽입할 범위를 벗어났습니다.")
-		return
+memory = []
+head, current, pre = None, None, None
+data_array = ['다현', '정연', '쯔위', '사나', '지효']
 
-	append_pokemons = {pokemon : health}
-	first_pokemons = {}
-	last_pokemons = {}
+def insert_node(find_data, insert_data):
+    global memory, head, current, pre
 
-	list_pokemons_keys = list(pokemons.keys())
-	list_pokemons_values = list(pokemons.values())
+    if find_data == head.data:
+        node = Node()
+        node.data = insert_data
+        node.link = head
+        last = head
+        while last.link != head:
+            last = last.link
+        last.link = node
+        head = node
+        return
 
-	for i in range(position):  #0~1
-		first_pokemons.update({list_pokemons_keys[i] : list_pokemons_values[i]})  #피카츄 파이리
-	for k in range(position, len(pokemons)):  #2~3
-		last_pokemons.update({list_pokemons_keys[k] : list_pokemons_values[k]})  #꼬부기 라이츄
+    current = head
+    while current.link != head:
+        pre = current
+        current = current.link
+        if current.data == find_data:
+            node = Node()
+            node.data = insert_data
+            node.link = current
+            pre.link = node
+            return
 
-	new_pokemons = {}
-	if position == 0:
-		new_pokemons.update(append_pokemons)
-		new_pokemons.update(first_pokemons)
-		new_pokemons.update(last_pokemons)
+    node = Node()
+    node.data = insert_data
+    current.link = node
+    node.link = head
 
-	else:
-		new_pokemons.update(first_pokemons)
-		new_pokemons.update(append_pokemons)
-		new_pokemons.update(last_pokemons)
+def delete_node(delete_node):
+    global memory, head, current, pre
 
-	print(new_pokemons)
+    if head.data == delete_node:
+        current = head
+        head = head.link
+        last = head
+        while last.link != current:
+            last = last.link
+        last.link = head
+        del(current)
+        return
 
-pokemons = {"피카츄" : 100, "파이리" : 80, "꼬부기" : 30, "라이츄" : 10}
+    current = head
+    while current.link != head:
+        pre = current
+        current = current.link
+        if current.data == delete_node:
+            pre.link = current.link
+            del(current)
+            return
+
+def find_node(find_data):
+    global memory, head, current, pre
+
+    current = head
+    if current.data == find_data:
+        return current
+    while current.link != head:
+        current = current.link
+        if current.data == find_data:
+            return current
+    return Node()  #여기서 node의미랑 none출력하고 싶으면?
 
 if __name__=="__main__":
+    node = Node()
+    node.data = data_array[0]
+    head = node
+    node.link = node
+    memory.append(node)
 
-	while True:
-		pokemon = input("추가할 포켓몬:")
-		health = int(input(f'{pokemon}의 능력치:'))
-		find_and_insert_data(pokemon, health)
+    for data in data_array[1:]:
+        pre = node
+        node = Node()
+        node.data = data
+        pre.link = node
+        node.link = head
+        memory.append(node)
+
+    print_nodes(head)
+
+    fNode = find_node("다현")
+    print(fNode.data)
+
+    fNode = find_node("쯔위")
+    print(fNode.data)
+
+    print(find_node("쯔위").data)
+
+    fNode = find_node("재남")
+    print(fNode.data)
+    print(find_node("재남").data)
+
