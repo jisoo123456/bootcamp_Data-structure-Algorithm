@@ -1,47 +1,54 @@
-import random
+def is_line_full():
+    global  SIZE, line, rear, front
+    if rear == SIZE-1:
+        return True
+    return False
 
-class tree_node:
-    def __init__(self):
-        self.data = None
-        self.left = None
-        self.right = None
+def is_line_empty():
+    global SIZE, line, rear, front
+    if front == rear:
+        return True
+    else:
+        return False
 
-data_array = ['바나나맛우유', '레쓰비캔커피', '츄파츕스', '도시락', '삼다수', '코카콜라', '삼각김밥']
-sale_array = [random.choice(data_array) for _ in range(20)]
-
-
-node = tree_node()
-node.data = sale_array[0]
-root = node
-
-for sale in sale_array[1:]:
-    node = tree_node()
-    node.data = sale
-
-    current = root
-    while True:
-        if sale < current.data:
-            if current.left == None:
-                current.left = node
-                break
-            else:
-                current = current.left
-        elif sale > current.data:
-            if current.right == None:
-                current.right = node
-                break
-            else:
-                current = current.right
-        else:
-            del(node)
-            break
-
-def preorder(node):
-    if node == None:
+def en_queue(data):
+    global SIZE, line, rear, front
+    if is_line_full():
+        print("The waiting room is full!")
         return
-    print(node.data, end = ' ')
-    preorder(node.left)
-    preorder(node.right)
+    rear = rear + 1
+    line[rear] = data
 
-print(sale_array)
-preorder(root)
+def de_queue():
+    global SIZE, line, rear, front
+    if is_line_empty():
+        print("It's an empty line.")
+        return
+
+    front = front + 1
+    out_member = line[front]
+    line[front] = None
+
+    for i in range(front+1, rear + 1):
+        line[i-1] = line[i]
+        line[i] = None
+    front = -1
+    rear = rear -1
+
+    print(f"{out_member} enter")
+
+SIZE = 5
+line = [None for i in range(SIZE)]
+rear = front = -1
+
+en_queue("sera")
+en_queue("alice")
+en_queue("tom")
+en_queue("tony")
+en_queue("judy")
+en_queue("sunny")
+de_queue()
+de_queue()
+de_queue()
+en_queue("bella")
+print(f"line: {line}")
