@@ -1,107 +1,61 @@
-class Node:
-    def __init__(self):  #init int로 오타남
+class tree_node:
+    def __init__(self):
+        self.left = None
         self.data = None
-        self.node = None
+        self.right = None
 
-def print_nodes(start):
-    current = start
-    print(current.data, end = ' ')
-    while current.link != start:
-        pre = current  #
-        current = pre.link  #
-        print(current.data, end = ' ')
-    print()
+node1 = tree_node()
+node1.data = 'hasa'
 
+node2 = tree_node()
+node2.data = 'sola'
+node1.left = node2
 
-def insert_node(find_data, insert_data):
-    global memory, head, current, pre
+node3 = tree_node()
+node3.data = 'monbyeal'
+node1.right = node3
 
-    if find_data == head.data:
-        node = Node()
-        node.data = insert_data
-        node.link = head
-        last = head
-        while last.link != head:
-            last = last.link
-        last.link = node
-        head = node
+node4 = tree_node()
+node4.data = 'hyheen'
+node2.left = node4
+
+node5 = tree_node()
+node5.data = 'zyee'
+node2.right = node5
+
+node6 = tree_node()
+node6.data = 'sunmi'
+node3.left = node6
+
+def preorder(node):
+    if node == None:
         return
+    print(node.data, end = '->')  #화사
+    preorder(node.left) #preorder(sola) -> sola -> preorder(hyheen) -> hyheen -> out preorder(hyheen) -> preorder(zyeel)
+                        #zyee -> out preorder(zyee) -> out preorder(sola) -> preorder(monbyeal) -> monbyeal
+                        # preorder(sunmi) -> sunmi -> out preorder(sunmi) -> preorder(monbyeal.right) -> return
+    preorder(node.right)
 
-    current = head
-    while current.link != head:
-        pre = current
-        current = current.link
-        if current.data == find_data:
-            node = Node()
-            node.data = insert_data
-            node.link = current
-            pre.link = node
-            return
 
-    node = Node()
-    node.data = insert_data
-    current.link = node
-    node.link = head
-
-def delete_node(delete_node):
-    global memory, head, current, pre
-
-    if head.data == delete_node:
-        current = head
-        head = head.link
-        last = head
-        while last.link != current:
-            last = last.link
-        last.link = head
-        del(current)
+def inorder(node):
+    if node == None:
         return
+    inorder(node.left)
+    print(node.data, end='->')
+    inorder(node.right)
 
-    current = head
-    while current.link != head:
-        pre = current
-        current = current.link
-        if current.data == delete_node:
-            pre.link = current.link
-            del(current)
-            return
+def postorder(node):
+    if node == None:
+        return
+    postorder(node.left)
+    postorder(node.right)
+    print(node.data, end='->')
 
-def find_node(find_data):
-    global memory, head, current, pre
-
-    current = head
-    if current.data == find_data:
-        return current
-    while current.link != head:
-        current = current.link
-        if current.data == find_data:
-            return current
-    return None
-
-memory = []
-head, current, pre = None, None, None
-data_array = ['다현', '정연', '쯔위', '사나', '지효']
-
-if __name__=="__main__":
-    node = Node()
-    node.data = data_array[0]
-    head = node
-    node.link = node
-    memory.append(node)
-
-    for data in data_array[1:]:
-        pre = node
-        node = Node()
-        node.data = data
-        pre.link = node
-        node.link = head
-        memory.append(node)
-
-    print_nodes(head)
-
-    fNode = find_node("다현")
-    print(fNode.data)
-
-    print(find_node("쯔위").data)
-
-
-    print(find_node("재남"))
+print("preorder: ", end = ' ')
+preorder(node1)
+print()
+print("inorder: ", end = ' ')
+inorder(node1)
+print()
+print("postorder: ", end = ' ')
+postorder(node1)
