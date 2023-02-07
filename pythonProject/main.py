@@ -1,72 +1,107 @@
-import random
-import math
-
-class Node():
-    def __init__(self):
+class Node:
+    def __init__(self):  #init int로 오타남
         self.data = None
-        self.link = None
+        self.node = None
 
-def store_list(store):  #ex. [A, 10 ,20] [B, 1, 2] [C, 20, 30]
+def print_nodes(start):
+    current = start
+    print(current.data, end = ' ')
+    while current.link != start:
+        pre = current  #
+        current = pre.link  #
+        print(current.data, end = ' ')
+    print()
+
+
+def insert_node(find_data, insert_data):
     global memory, head, current, pre
 
-    node = Node()
-    node.data = store
-    memory.append(node)
-
-    if head == None:
-        head = node
+    if find_data == head.data:
+        node = Node()
+        node.data = insert_data
         node.link = head
-        return
-
-    node_x, node_y = node.data[1:]
-    node_distance = math.sqrt(node_x * node_x + node_y * node_y)
-    head_x, head_y = head.data[1:]
-    head_distance = math.sqrt(head_x * head_x + head_y * head_y)
-
-    if head_distance > node_distance:  #node가 head 앞에 오는 경우
-        node.link = head  #B.link = A
-        last = head  #last = A
+        last = head
         while last.link != head:
             last = last.link
         last.link = node
         head = node
         return
 
-    current = head  #B
-    while current.link != head:  #B.link = A/ A.link
-        pre = current  #pre =B
-        current = current.link  #current = B.link = A
-        current_x, current_y = current.data[1:]
-        current_distance = math.sqrt(current_x * current_x + current_y * current_y)
-
-        if current_distance > node_distance:
-            pre.link = node
+    current = head
+    while current.link != head:
+        pre = current
+        current = current.link
+        if current.data == find_data:
+            node = Node()
+            node.data = insert_data
             node.link = current
+            pre.link = node
             return
 
-    current.link = node  #A.link = c
-    node.link = head  #c.link = head
+    node = Node()
+    node.data = insert_data
+    current.link = node
+    node.link = head
 
-def print_stores(start):  #ex. [A, 10 ,20] [B, 1, 2] [C, 20, 30]
-    current = start
+def delete_node(delete_node):
+    global memory, head, current, pre
 
+    if head.data == delete_node:
+        current = head
+        head = head.link
+        last = head
+        while last.link != current:
+            last = last.link
+        last.link = head
+        del(current)
+        return
+
+    current = head
+    while current.link != head:
+        pre = current
+        current = current.link
+        if current.data == delete_node:
+            pre.link = current.link
+            del(current)
+            return
+
+def find_node(find_data):
+    global memory, head, current, pre
+
+    current = head
+    if current.data == find_data:
+        return current
     while current.link != head:
         current = current.link
-        x, y = current.data[1:]
-        print(f'{current.data[0]} store: distance {math.sqrt(x * x + y * y)}')
+        if current.data == find_data:
+            return current
+    return None
 
 memory = []
 head, current, pre = None, None, None
+data_array = ['다현', '정연', '쯔위', '사나', '지효']
 
 if __name__=="__main__":
-    store_array = []
-    store_name = 'A'
-    for _ in range(10):
-        store = [store_name, random.randint(1, 100), random.randint(1, 100)]
-        store_array.append(store)
-        store_name = chr(ord(store_name) + 1)
+    node = Node()
+    node.data = data_array[0]
+    head = node
+    node.link = node
+    memory.append(node)
 
-    for store in store_array:
-        store_list(store)  #ex. [A, 10 ,20] [B, 1, 2] [C, 20, 30]
+    for data in data_array[1:]:
+        pre = node
+        node = Node()
+        node.data = data
+        pre.link = node
+        node.link = head
+        memory.append(node)
 
-    print_stores(head)
+    print_nodes(head)
+
+    fNode = find_node("다현")
+    print(fNode.data)
+
+    print(find_node("쯔위").data)
+
+
+    print(find_node("재남"))
