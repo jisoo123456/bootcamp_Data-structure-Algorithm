@@ -1,50 +1,46 @@
-#너비우선탐색(큐사용)
-from collections import deque
 class Graph:
-	def __init__ (self, size) :
-		self.SIZE = size
-		self.graph = [[0 for _ in range(size)] for _ in range(size)]
+    def __init__(self, size):
+        self.size = size
+        self.graph = [[0 for _ in range(size)] for _ in range(size)]
 
 
-g = None
-queue = deque([])
-visited_array = []
+store_array = [['GS25', 30], ['CU', 60], ['Seven11', 100], ['MiniStop', 90], ['Emart24', 40]]
 
+store_graph = Graph(5)
+store_graph.graph[0][1] = 1; store_graph.graph[0][2] = 1
+store_graph.graph[1][0] = 1; store_graph.graph[1][2] = 1; store_graph.graph[1][3] = 1
+store_graph.graph[2][0] = 1; store_graph.graph[2][1] = 1; store_graph.graph[2][3] = 1
+store_graph.graph[3][1] = 1; store_graph.graph[3][2] = 1; store_graph.graph[3][4] = 1
+store_graph.graph[4][3] = 1
 
-g = Graph(4)
-g.graph[0][2] = 1; g.graph[0][3] = 1
-g.graph[1][2] = 1
-g.graph[2][0] = 1; g.graph[2][1] = 1; g.graph[2][3] = 1
-g.graph[3][0] = 1; g.graph[3][2] = 1
-
-print('## G1 무방향 그래프 ##')
-for row in range(4) :
-	for col in range(4) :
-		print(g.graph[row][col], end =' ')
-	print()
+stack = []
+visit_array = []
 
 current = 0
-queue.append(current)
-visited_array.append(current)
+max = current
+max_number = store_array[current][1]
+stack.append(current)
+visit_array.append(current)
 
-while len(queue) != 0:
-	next = None
-	for vertex in range(4) :
-		if g.graph[current][vertex] == 1 :
-			if vertex in visited_array :
-				pass
-			else :
-				next = vertex
-				break
+while len(stack) != 0:
+    next = None
+    for vertex in range(store_graph.size):
+        if store_graph.graph[current][vertex] == 1:
+            if vertex in visit_array:
+                pass
+            else:
+               next = vertex
+               break
+    if next != None:
+        current = vertex
+        stack.append(current)
+        visit_array.append(current)
+        if store_array[current][1] > max_number:
+            #max_store = store_array[current][0]
+            max = current
+            max_number = store_array[current][1]
+    else:
+        current = stack.pop()
 
-	if next is not None:
-		current = next
-		queue.append(current)
-		visited_array.append(current)
-	else :
-		current = queue.popleft()
-
-
-for i in visited_array :
-	print(i, end = ' --> ')
-print("END")
+print(f'honeybutterchips max store & number = {store_array[max][0]}, {store_array[max][1]}')
+#before {store_array[current][0]}
