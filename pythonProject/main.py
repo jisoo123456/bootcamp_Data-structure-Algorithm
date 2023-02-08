@@ -1,54 +1,50 @@
-def is_line_full():
-    global  SIZE, line, rear, front
-    if rear == SIZE-1:
-        return True
-    return False
+#너비우선탐색(큐사용)
 
-def is_line_empty():
-    global SIZE, line, rear, front
-    if front == rear:
-        return True
-    else:
-        return False
+class Graph:
+	def __init__ (self, size) :
+		self.SIZE = size
+		self.graph = [[0 for _ in range(size)] for _ in range(size)]
 
-def en_queue(data):
-    global SIZE, line, rear, front
-    if is_line_full():
-        print("The waiting room is full!")
-        return
-    rear = rear + 1
-    line[rear] = data
 
-def de_queue():
-    global SIZE, line, rear, front
-    if is_line_empty():
-        print("It's an empty line.")
-        return
+G1 = None
+queue = []
+visited_array = []
 
-    front = front + 1
-    out_member = line[front]
-    line[front] = None
 
-    for i in range(front+1, rear + 1):
-        line[i-1] = line[i]
-        line[i] = None
-    front = -1
-    rear = rear -1
+G1 = Graph(4)
+G1.graph[0][2] = 1; G1.graph[0][3] = 1
+G1.graph[1][2] = 1
+G1.graph[2][0] = 1; G1.graph[2][1] = 1; G1.graph[2][3] = 1
+G1.graph[3][0] = 1; G1.graph[3][2] = 1
 
-    print(f"{out_member} enter")
+print('## G1 무방향 그래프 ##')
+for row in range(4) :
+	for col in range(4) :
+		print(G1.graph[row][col], end = ' ')
+	print()
 
-SIZE = 5
-line = [None for i in range(SIZE)]
-rear = front = -1
+current = 0
+queue.append(current)
+visited_array.append(current)
 
-en_queue("sera")
-en_queue("alice")
-en_queue("tom")
-en_queue("tony")
-en_queue("judy")
-en_queue("sunny")
-de_queue()
-de_queue()
-de_queue()
-en_queue("bella")
-print(f"line: {line}")
+while len(queue) != 0:
+	next = None
+	for vertex in range(4) :
+		if G1.graph[current][vertex] == 1 :
+			if vertex in visited_array :
+				pass
+			else :
+				next = vertex
+				break
+
+	if next is not None:
+		current = next
+		queue.append(current)
+		visited_array.append(current)
+	else :
+		current = queue.pop(0)  #overhead
+
+
+for i in visited_array :
+	print(i, end = ' --> ')
+print("END")
