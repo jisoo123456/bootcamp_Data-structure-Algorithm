@@ -1,46 +1,52 @@
-class Graph:
-    def __init__(self, size):
-        self.size = size
-        self.graph = [[0 for _ in range(size)] for _ in range(size)]
+import tkinter as tk
+
+memos = [None for _ in range(100)]  # 전역 리스트
+memos[0], memos[1] = 0, 1
 
 
-store_array = [['GS25', 30], ['CU', 60], ['Seven11', 100], ['MiniStop', 90], ['Emart24', 40]]
+def fibo_memo_recu(n):
+    """
+    재귀함수에 Memoization(DP)을 사용한 피보나치 수열 처리 함수
+    :param n:
+    :return:
+    """
 
-store_graph = Graph(5)
-store_graph.graph[0][1] = 1; store_graph.graph[0][2] = 1
-store_graph.graph[1][0] = 1; store_graph.graph[1][2] = 1; store_graph.graph[1][3] = 1
-store_graph.graph[2][0] = 1; store_graph.graph[2][1] = 1; store_graph.graph[2][3] = 1
-store_graph.graph[3][1] = 1; store_graph.graph[3][2] = 1; store_graph.graph[3][4] = 1
-store_graph.graph[4][3] = 1
+    if n <= 1:
+        return memos[n]
 
-stack = []
-visit_array = []
+    if memos[n] is not None:  # 전역 메모리 memos에 이전에 계산한 결과 값이 존재하면
+        return memos[n]
 
-current = 0
-max = current
-max_number = store_array[current][1]
-stack.append(current)
-visit_array.append(current)
+    memos[n] = fibo_memo_recu(n-2) + fibo_memo_recu(n-1)  # 처음 방문하는 n이면
+    return memos[n]
 
-while len(stack) != 0:
-    next = None
-    for vertex in range(store_graph.size):
-        if store_graph.graph[current][vertex] == 1:
-            if vertex in visit_array:
-                pass
-            else:
-               next = vertex
-               break
-    if next != None:
-        current = vertex
-        stack.append(current)
-        visit_array.append(current)
-        if store_array[current][1] > max_number:
-            #max_store = store_array[current][0]
-            max = current
-            max_number = store_array[current][1]
+
+def fact_recu(n):
+    if n == 1:
+        return 1
     else:
-        current = stack.pop()
+        return n * fact_recu(n-1)
 
-print(f'honeybutterchips max store & number = {store_array[max][0]}, {store_array[max][1]}')
-#before {store_array[current][0]}
+def factorial_input():
+    lbl_result.config(text=f"팩토리얼 계산 출력 결과 : {fact_recu(int(en_num_input.get()))}")
+
+
+def fibonacci_input():
+    lbl_result.config(text=f"피보나치 계산 출력 결과 : {fibo_memo_recu(int(en_num_input.get()))}")
+
+
+win = tk.Tk() #윈도우 생성
+win.title("calculator")  #피보나치, 팩토리얼 계산기
+win.geometry("250x150")
+
+en_num_input = tk.Entry()  #텍스트 입력 상자
+lbl_result = tk.Label(text="계산기 출력 결과:")
+btn_fact = tk.Button(text="펙토리얼", command=factorial_input)
+btn_fibo = tk.Button(text="피보나치", command=fibonacci_input)
+
+en_num_input.pack()
+lbl_result.pack()
+btn_fact.pack(fill='x')
+btn_fibo.pack(fill='x')
+
+win.mainloop()
