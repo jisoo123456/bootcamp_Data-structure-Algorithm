@@ -1,17 +1,19 @@
-def sort(array):
-    for i in array: #0: i = [sera, 88]
-        for j in range(1, len(array)): # 1 2 3 4 5
-            if array[j][1] < array[j-1][1]:
-                array[j], array[j-1] = array[j-1], array[j]
+def solution(s, skip, index):
+    a = list(s)
+    list1 = []
+    for i in a:
+        string1 = (chr(ord(i)+index))
+        if string1 in skip:
+            for j in range(1,):
+                string1  = (chr(ord(i)+index+j))
+                return string1
+        list1.append(string1)
 
-    return array
+    answer = ''.join(list1)
+    print(answer)
 
+s = input("input string(5~50):")
+skip = input("input skip(1~10):")
+index = int(input("input index(1~20):"))
 
-student_array = [['sera', 88], ['alice', 99], ['tom', 71], ['tony', 78], ['judy', 67], ['bella', 92]]
-
-print(student_array)
-sort(student_array)
-print(student_array)
-
-for i in range(len(student_array)//2):
-    print(f'[{student_array[i][0]}, {student_array[len(student_array)-1-i][0]}]')
+solution(s, skip, index)
